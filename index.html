@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subway Surf - Web</title>
+    <style>
+        body {
+            margin: 0;
+            background: #111;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        #gameCanvas {
+            background: #1e1e1e;
+            width: 100%;
+            max-width: 800px;
+            height: 400px;
+            margin-top: 20px;
+            border: 3px solid white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Subway Surf - Web</h1>
+
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // 3 PISTAS (distâncias horizontais)
+        const lanes = [200, 400, 600];
+
+        // PERSONAGEM
+        const player = {
+            x: lanes[1],
+            y: 300,
+            width: 40,
+            height: 40,
+            laneIndex: 1,
+            color: "yellow"
+        };
+
+        function drawPlayer() {
+            ctx.fillStyle = player.color;
+            ctx.fillRect(player.x - player.width / 2, player.y - player.height / 2, player.width, player.height);
+        }
+
+        // CONTROLE ESQUERDA / DIREITA
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowLeft" && player.laneIndex > 0) {
+                player.laneIndex--;
+                player.x = lanes[player.laneIndex];
+            }
+            if (e.key === "ArrowRight" && player.laneIndex < 2) {
+                player.laneIndex++;
+                player.x = lanes[player.laneIndex];
+            }
+        });
+
+        // LOOP PRINCIPAL
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPlayer();
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
+
+</body>
+</html>
